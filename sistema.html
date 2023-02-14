@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Produtos com preços aleatórios</title>
+  </head>
+  <body>
+    <div id="money">Balance: 1000$</div>
+    <form>
+      <button type="submit">Atualizar Preços</button>
+    </form>
+    
+    <div id="product-list">
+      <div id="product1">
+        <div id="product1-price">Produto 1: 100$</div>
+        <input type="text" id="product1-quantity" value="0">
+        <button type="button" id="product1-buy">Comprar</button>
+      </div>
+      <div id="product2">
+        <div id="product2-price">Produto 2: 150$</div>
+        <input type="text" id="product2-quantity" value="0">
+        <button type="button" id="product2-buy">Comprar</button>
+      </div>
+      <div id="product3">
+        <div id="product3-price">Produto 3: 400$</div>
+        <input type="text" id="product3-quantity" value="0">
+        <button type="button" id="product3-buy">Comprar</button>
+      </div>
+      <div id="product4">
+        <div id="product4-price">Produto 4: 600$</div>
+        <input type="text" id="product4-quantity" value="0">
+        <button type="button" id="product4-buy">Comprar</button>
+      </div>
+      <div id="product5">
+        <div id="product5-price">Produto 5: 1000$</div>
+        <input type="text" id="product5-quantity" value="0">
+        <button type="button" id="product5-buy">Comprar</button>
+      </div>
+      <div id="product6">
+        <div id="product6-price">Produto 6: 1500$</div>
+        <input type="text" id="product6-quantity" value="0">
+        <button type="button" id="product6-buy">Comprar</button>
+      </div>
+      <div id="product7">
+        <div id="product7-price">Produto 7: 12000$</div>
+        <input type="text" id="product7-quantity" value="0">
+        <button type="button" id="product7-buy">Comprar</button>
+      </div>
+      <div id="product8">
+        <div id="product8-price">Produto 8: 20000$</div>
+        <input type="text" id="product8-quantity" value="0">
+        <button type="button" id="product8-buy">Comprar</button>
+      </div>
+    </div>
+    <script>
+      const form = document.querySelector("form");
+      const money = document.querySelector("#money");
+      const productPrices = {
+        product1: 100,
+        product2: 150,
+        product3: 400,
+        product4: 600,
+        product5: 1000,
+        product6: 1500,
+        product7: 12000,
+        product8: 20000
+      };
+      const productPriceRanges = {
+        product1: [-40, 35],
+        product2: [-70, 50],
+        product3: [-30, 30],
+        product4: [-45, 75],
+        product5: [-45, 75],
+        product6: [-40, 35],
+        product7: [-70, 50],
+        product8: [-15, 20]
+      };
+      const inventory = {};
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+
+        for (const product in productPrices) {
+          const productPriceRange = productPriceRanges[product];
+          const priceVariation =
+            (Math.random() * (productPriceRange[1] - productPriceRange[0])) +
+            productPriceRange[0];
+          const productPrice =
+            productPrices[product] + productPrices[product] * (priceVariation / 100);
+
+          document.querySelector(`#${product}-price`).textContent = `${
+            document.querySelector(`#${product}-price`).textContent.split(":")[0]
+          }: ${productPrice.toFixed(2)}$`;
+        }
+      });
+      for (const product in productPrices) {
+  document.querySelector(`#${product}-buy`).addEventListener("click", event => {
+    const productPrice = parseFloat(
+            document.querySelector(`#${product}-price`).textContent.split(":")[1].trim()
+    );
+          const productQuantity = parseInt(
+            document.querySelector(`#${product}-quantity`).value
+          );
+          const currentMoney = parseFloat(money.textContent.split(":")[1].trim());
+
+          if (currentMoney < productPrice * productQuantity) {
+            alert("Você não tem dinheiro suficiente para comprar este produto.");
+            return;
+          }
+
+          if (!inventory[product]) {
+            inventory[product] = {
+              price: productPrice,
+              quantity: productQuantity
+            };
+    } else {
+            inventory[product].quantity += productQuantity;
+    }
+
+          money.textContent = `Balance: ${(currentMoney - productPrice * productQuantity).toFixed(2)}$`;
+  });
+}
+
+    </script>
+  </body>
+</html>

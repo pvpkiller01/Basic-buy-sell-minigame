@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function addToInventory(product) {
+  let quantityInput = document.getElementById("quantityInput").value;
+  let quantity = parseInt(quantityInput);
+  if (isNaN(quantity) || quantity <= 0) {
+    alert("Insira uma quantidade válida");
+    return;
+  }
+
+  let inventory = localStorage.getItem("inventory");
+  if (inventory) {
+    inventory = JSON.parse(inventory);
+  } else {
+    inventory = {};
+  }
+
+  let total = 0;
+  for (let item in inventory) {
+    total += inventory[item];
+  }
+
+  if (total + quantity > 50) {
+    alert("Inventário cheio! Remova algum produto antes de adicionar mais.");
+    return;
+  }
+
+  if (inventory[product]) {
+    inventory[product] += quantity;
+  } else {
+    inventory[product] = quantity;
+  }
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  showInventory();
+}
+
+function removeFromInventory(product) {
+  let quantityInput = document.getElementById("quantityInput").value;
+  let quantity = parseInt(quantityInput);
+  if (isNaN(quantity) || quantity <= 0) {
+    alert("Insira uma quantidade válida");
+    return;
+  }
+
+  let inventory = localStorage.getItem("inventory");
+  if (inventory) {
+    inventory = JSON.parse(inventory);
+  } else {
+    inventory = {};
+  }
+
+  if (!inventory[product]) {
+    alert("Produto não encontrado em estoque.");
+    return;
+  }
+
+  if (inventory[product] < quantity) {
+    alert("Não há quantidade suficiente em estoque para vender.");
+    return;
+  }
+
+  if (inventory[product] === quantity) {
+    delete inventory[product];
+  } else {
+    inventory[product] -= quantity;
+  }
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  showInventory();
+}
+    </script>
+  </head>
+  <body>
+    <h2>Comprar Produtos:</h2>
+    <input type="number" id="quantityInput">
+    <button onclick="addToInventory('produto 1')">Comprar Produto 1</button><br>
+    <button onclick="addToInventory('produto 2')">Comprar Produto 2</button><br>

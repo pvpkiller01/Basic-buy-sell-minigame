@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+  </head>
+  <body>
+    <style>
+      h2 {
+  text-align: center;
+  font-family: sans-serif;
+  font-variant: small-caps;
+}
+
+.buttons {
+  display: block;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+#bomdia{
+width: 5%;
+
+}
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 3%;
+  height: 25px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+button:hover {
+  background-color: #3E8E41;
+}
+#quantityInput {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0px 0px 10px 0px #ccc;
+  transition: all 0.5s ease;
+}
+
+#quantityInput:focus {
+  border: 1px solid #333;
+  box-shadow: 0px 0px 10px 0px #333;
+  outline: none;
+}
+    </style>
+    
+    <h2>A grande empresa</h2>
+<h2>Produtos:</h2>
+<h2 id="wallet">Balance: </h2>
+<button onclick="setRandomPrices()" id="bomdia">Next day</button> <br>
+Digite a quantidade: <input type="number" id="quantityInput"> <br>
+<div class="buttons">
+<div id="price1">Produto 1<button onclick="addToInventory('produto 1',0)">Buy</button><button onclick="removeFromInventory('produto 1');">Sell</button><br></div>
+<div id="price2">Produto 2<button onclick="addToInventory('produto 2',1)">Buy</button><button onclick="removeFromInventory('produto 2');">Sell</button><br></div>
+<div id="price3"> Produto 3<button onclick="addToInventory('produto 3',2)">Buy</button><button onclick="removeFromInventory('produto 3');">Sell</button><br></div>
+<div id="price4"> Produto 4<button onclick="addToInventory('produto 4',3)">Buy</button><button onclick="removeFromInventory('produto 4');">Sell</button><br></div>
+<div id="price5"> Produto 5<button onclick="addToInventory('produto 5',4)">Buy</button><button onclick="removeFromInventory('produto 5');">Sell</button><br></div>
+<div id="price6"> Produto 6<button onclick="addToInventory('produto 6',5)">Buy</button><button onclick="removeFromInventory('produto 6');">Sell</button><br></div>
+<div id="price7"> Produto 7<button onclick="addToInventory('produto 7',6)">Buy</button><button onclick="removeFromInventory('produto 7');">Sell</button><br></div>
+<div id="price8"> Produto 8<button onclick="addToInventory('produto 8',7)">Buy</button><button onclick="removeFromInventory('produto 8');">Sell</button><br></div>
+<div id="teste">teste</div>
+</div>
+
+
+
+  
+    <h2 id="inventoryTitle">Inventário</h2>
+<ul id="inventory"></ul>  
+
+<script>
+  let wallet = 1000;
+      const p = [];
+
+function showWallet(){
+  document.getElementById("wallet").innerHTML = "Balance: " + wallet + "$";
+}
+function setRandomPrices() {
+    
+    const products = [
+      { id: 1, basePrice: 100, minVariation: -0.25, maxVariation: 0.15 },
+      { id: 2, basePrice: 150, minVariation: -0.45, maxVariation: 0.20 },
+      { id: 3, basePrice: 300, minVariation: -0.25, maxVariation: 0.20 },
+      { id: 4, basePrice: 500, minVariation: -0.50, maxVariation: 0.15 },
+      { id: 5, basePrice: 800, minVariation: -0.10, maxVariation: 0.30 },
+      { id: 6, basePrice: 1000, minVariation: -0.10, maxVariation: 0.20 },
+      { id: 7, basePrice: 1400, minVariation: -0.15, maxVariation: 0.10 },
+      { id: 8, basePrice: 2000, minVariation: -0.45, maxVariation: 0.55 }
+    ];
+  
+    products.forEach(product => {
+      const variation = product.minVariation + Math.random() * (product.maxVariation - product.minVariation);
+      const price = product.basePrice + product.basePrice * variation;
+      const roundedPrice = Math.round(price);
+      p[product.id-1]=roundedPrice;
+      
+      document.getElementById(`price${product.id}`).innerHTML = `Produto ${product.id} -  ${roundedPrice}$ <button onclick="addToInventory('produto ${product.id}')">Buy</button><button onclick="removeFromInventory('produto ${product.id}')">Sell</button><br>`;
+    });
+  }
+
+function addToInventory(product,x) {
+  let quantityInput = document.getElementById("quantityInput").value;
+  let quantity = parseInt(quantityInput);
+  if (isNaN(quantity) || quantity <= 0) {
+    alert("Insira uma quantidade válida");
+    return;
+  }
+
+  let inventory = localStorage.getItem("inventory");
+  if (inventory) {
+    inventory = JSON.parse(inventory);
+  } else {
+    inventory = {};
+  }
+
+  let total = 0;
+  for (let item in inventory) {
+    total += inventory[item];
+  }
+
+  if (total + quantity > 50) {
+    alert("Inventário cheio! Remova algum produto antes de adicionar mais.");
+    return;
+  }
+
+  
+  
+  
+  
+  if (inventory[product]) {
+    inventory[product] += quantity;
+  } else {
+    inventory[product] = quantity;
+  }
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  
+
+  
+  wallet=wallet-(p[x]*quantityInput);
+  
+
+  showInventory();
+  showWallet();
+}
+
+function removeFromInventory(product,x) {
+  let quantityInput = document.getElementById("quantityInput").value;
+  let quantity = parseInt(quantityInput);
+  if (isNaN(quantity) || quantity <= 0) {
+    alert("Insira uma quantidade válida");
+    return;
+  }
+
+  let inventory = localStorage.getItem("inventory");
+  if (inventory) {
+    inventory = JSON.parse(inventory);
+  } else {
+    inventory = {};
+  }
+
+  if (!inventory[product]) {
+    alert("Produto não encontrado em estoque.");
+    return;
+  }
+
+  if (inventory[product] < quantity) {
+    alert("Não há quantidade suficiente em estoque para vender.");
+    return;
+  }
+
+  
+
+  if (inventory[product] === quantity) {
+    delete inventory[product];
+  } else {
+    inventory[product] -= quantity;
+  }
+  localStorage.setItem("inventory", JSON.stringify(inventory));
+  showInventory();
+  showWallet();
+}
+
+  
+
+
+
+  function showInventory() {
+    let inventory = localStorage.getItem("inventory");
+    if (inventory) {
+      inventory = JSON.parse(inventory);
+      let inventoryList = document.getElementById("inventory");
+      let total = 0;
+      for (let product in inventory) {
+        total += inventory[product];
+      }
+      document.getElementById("inventoryTitle").innerHTML = "Inventário " + total + "/50 :";
+      inventoryList.innerHTML = "";
+      for (let product in inventory) {
+        let item = document.createElement("li");
+        item.innerHTML = product + ": " + inventory[product];
+        inventoryList.appendChild(item);
+      }
+    }
+  }
+  
+  
+  
+  showInventory();
+  showWallet();
+  setRandomPrices();
+  
+</script>
+  </body>
+</html>
