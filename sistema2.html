@@ -61,19 +61,25 @@ button:hover {
     
     <h2>A grande empresa</h2>
 <h2>Produtos:</h2>
-<h2 id="wallet">Balance: </h2>
+<h2 id="wallet2">Balance: </h2>
 <button onclick="setRandomPrices()" id="bomdia">Next day</button> <br>
-Digite a quantidade: <input type="number" id="quantityInput"> <br>
+Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 <div class="buttons">
-<div id="price1">Produto 1<button onclick="addToInventory('produto 1',0)">Buy</button><button onclick="removeFromInventory('produto 1');">Sell</button><br></div>
-<div id="price2">Produto 2<button onclick="addToInventory('produto 2',1)">Buy</button><button onclick="removeFromInventory('produto 2');">Sell</button><br></div>
-<div id="price3"> Produto 3<button onclick="addToInventory('produto 3',2)">Buy</button><button onclick="removeFromInventory('produto 3');">Sell</button><br></div>
-<div id="price4"> Produto 4<button onclick="addToInventory('produto 4',3)">Buy</button><button onclick="removeFromInventory('produto 4');">Sell</button><br></div>
-<div id="price5"> Produto 5<button onclick="addToInventory('produto 5',4)">Buy</button><button onclick="removeFromInventory('produto 5');">Sell</button><br></div>
-<div id="price6"> Produto 6<button onclick="addToInventory('produto 6',5)">Buy</button><button onclick="removeFromInventory('produto 6');">Sell</button><br></div>
-<div id="price7"> Produto 7<button onclick="addToInventory('produto 7',6)">Buy</button><button onclick="removeFromInventory('produto 7');">Sell</button><br></div>
-<div id="price8"> Produto 8<button onclick="addToInventory('produto 8',7)">Buy</button><button onclick="removeFromInventory('produto 8');">Sell</button><br></div>
+  <div id="price1">
+    Produto 1
+    <button onclick="addToInventory('produto 1')">Buy</button>
+    <button onclick="removeFromInventory('produto 1');">Sell</button>
+    <br>
+</div>
+<div id="price2">Produto 2<button onclick="addToInventory('produto 2')">Buy</button><button onclick="removeFromInventory('produto 2');">Sell</button><br></div>
+<div id="price3"> Produto 3<button onclick="addToInventory('produto 3')">Buy</button><button onclick="removeFromInventory('produto 3');">Sell</button><br></div>
+<div id="price4"> Produto 4<button onclick="addToInventory('produto 4')">Buy</button><button onclick="removeFromInventory('produto 4');">Sell</button><br></div>
+<div id="price5"> Produto 5<button onclick="addToInventory('produto 5')">Buy</button><button onclick="removeFromInventory('produto 5');">Sell</button><br></div>
+<div id="price6"> Produto 6<button onclick="addToInventory('produto 6')">Buy</button><button onclick="removeFromInventory('produto 6');">Sell</button><br></div>
+<div id="price7"> Produto 7<button onclick="addToInventory('produto 7')">Buy</button><button onclick="removeFromInventory('produto 7');">Sell</button><br></div>
+<div id="price8"> Produto 8<button onclick="addToInventory('produto 8')">Buy</button><button onclick="removeFromInventory('produto 8');">Sell</button><br></div>
 <div id="teste">teste</div>
+<div id="teste2">teste</div>
 
 </div>
 
@@ -85,11 +91,15 @@ Digite a quantidade: <input type="number" id="quantityInput"> <br>
 
 <script>
   let wallet = 1000;
-  let prices = [];
-      
+  const roundedPriceArray = [];
+    
 
   function showWallet() {
-  document.getElementById("wallet").innerHTML = "Balance: " + Number(wallet).toFixed(2) + "$";
+    
+    
+    document.getElementById("wallet2").innerHTML = "Balance: "+ wallet+"$";
+    
+  
 }
 function setRandomPrices() {
     
@@ -105,27 +115,54 @@ function setRandomPrices() {
     ];
   
     products.forEach(product => {
+      
       const variation = product.minVariation + Math.random() * (product.maxVariation - product.minVariation);
       const price = product.basePrice + product.basePrice * variation;
-      const roundedPrice = Math.round(price);
-      prices.push(roundedPrice);
+      let roundedPrice = Math.round(price);
+      roundedPriceArray.push(roundedPrice);
+      
+      
+      
       
       document.getElementById(`price${product.id}`).innerHTML = `Produto ${product.id} -  ${roundedPrice}$ <button onclick="addToInventory('produto ${product.id}')">Buy</button><button onclick="removeFromInventory('produto ${product.id}')">Sell</button><br>`;
     });
   }
 
-function addToInventory(product,x) {
-  let quantityInput = document.getElementById("quantityInput").value;
-  let quantity = parseInt(quantityInput);
+ 
+function addToInventory(product) {
+  const quantity = parseFloat(document.getElementById("quantityInput").valueAsNumber);
+  let x=0;
+  let agora=0;
+  while(agora==0){
+    if("produto " + x==product){
+      agora=x;
+    }
+    x++;
+  }
+  agora-=1;
+    
+    document.getElementById("teste2").innerHTML = agora;
+    
+    const totalPrice = quantity * roundedPriceArray[agora];
+   
+    
+    if(wallet<totalPrice){
+      alert('Você não tem dinheiro suficiente para comprar este produto');
+      return;
+    }
+    wallet -= totalPrice;
+    showWallet();
   
-  let y=parseInt(x);
-  let teste01= parseInt(prices[y]);
   
+  if (isNaN(quantity)) {
+  alert('Por favor, digite um número válido');
+  return;
+}
   if (quantity > 0) {
     
-    const totalPrice = teste01 * quantity;
+   
     
-      wallet -= totalPrice;
+      
       showWallet();
      
   }
@@ -153,6 +190,8 @@ function addToInventory(product,x) {
     return;
   }
 
+
+
   
   
   
@@ -174,9 +213,24 @@ function addToInventory(product,x) {
   showWallet();
 }
 
-function removeFromInventory(product,x) {
+function removeFromInventory(product) {
   let quantityInput = document.getElementById("quantityInput").value;
   let quantity = parseInt(quantityInput);
+
+  let x=0;
+  let agora=0;
+  while(agora==0){
+    if("produto " + x==product){
+      agora=x;
+    }
+    x++;
+  } 
+  agora-=1;
+  document.getElementById("teste2").innerHTML = agora;
+    
+    const totalPrice = quantity * roundedPriceArray[agora];
+    wallet += totalPrice;
+    showWallet();
   if (isNaN(quantity) || quantity <= 0) {
     alert("Insira uma quantidade válida");
     return;
@@ -239,7 +293,7 @@ function removeFromInventory(product,x) {
   showInventory();
   showWallet();
   setRandomPrices();
-  document.getElementById("teste").innerHTML = prices[0];
+  
 </script>
   </body>
 </html>
