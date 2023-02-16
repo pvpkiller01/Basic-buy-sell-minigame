@@ -113,7 +113,9 @@ function setRandomPrices() {
       { id: 7, basePrice: 1400, minVariation: -0.15, maxVariation: 0.10 },
       { id: 8, basePrice: 2000, minVariation: -0.45, maxVariation: 0.55 }
     ];
-  
+    for(let i=0;i<8;i++){
+        roundedPriceArray.pop();
+      }
     products.forEach(product => {
       
       const variation = product.minVariation + Math.random() * (product.maxVariation - product.minVariation);
@@ -229,7 +231,7 @@ function removeFromInventory(product) {
   document.getElementById("teste2").innerHTML = agora;
     
     const totalPrice = quantity * roundedPriceArray[agora];
-    wallet += totalPrice;
+    
     showWallet();
   if (isNaN(quantity) || quantity <= 0) {
     alert("Insira uma quantidade válida");
@@ -259,7 +261,9 @@ function removeFromInventory(product) {
     delete inventory[product];
   } else {
     inventory[product] -= quantity;
+    
   }
+  wallet += totalPrice;
   localStorage.setItem("inventory", JSON.stringify(inventory));
   showInventory();
   showWallet();
