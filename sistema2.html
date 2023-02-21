@@ -88,9 +88,12 @@ button:hover {
 #map{
   width: 10%;
 }
+
+
     </style>
     
     <h2>A grande empresa</h2>
+    <div ><b id="day">Day:</b></div>
     <div class="health-bar-container">
       <span id="hp"><b>HP: </b></span>
       <span class="health-bar-label"></span>
@@ -98,6 +101,7 @@ button:hover {
         <div class="health" id="health" style="width:100%"></div>
       </div>
     </div>
+    
 <h2>Produtos:</h2>
 <h2 id="wallet2">Balance: </h2>
 
@@ -131,6 +135,7 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 <script>
   let wallet = 1000;
   let life=100;
+  let day=0;
   const roundedPriceArray = [];
     
 
@@ -141,11 +146,15 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
     
   
 }
+function showDay(){
+  document.getElementById("day").innerHTML = "Day: " + day;
+}
 
 const healthBar = document.getElementById("health");
 healthBar.style.width = life + "%";
 function setRandomPrices() {
-    
+    day++;
+    showDay();
     const products = [
       { id: 1, basePrice: 100, minVariation: -0.25, maxVariation: 0.15 },
       { id: 2, basePrice: 150, minVariation: -0.45, maxVariation: 0.20 },
@@ -340,7 +349,7 @@ function removeFromInventory(product) {
   showInventory();
   showWallet();
   setRandomPrices();
-  
+  showDay();
   
 </script>
   </body>
