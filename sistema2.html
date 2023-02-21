@@ -21,7 +21,7 @@ body {
   font-family: 'Quicksand', sans-serif;
 }
 #bomdia{
-width: 5%;
+width: 10%;
 
 }
 button {
@@ -57,12 +57,51 @@ button:hover {
   box-shadow: 0px 0px 10px 0px #333;
   outline: none;
 }
+.health-bar {
+  width: 300px;
+  height: 20px;
+  background-color: #5f5454;
+  margin-bottom: 20px;
+}
+
+.health {
+  height: 100%;
+  background-color: red;
+  transition: width 0.5s ease-in-out;
+}
+.health-bar-container {
+  display: flex;
+  align-items: center;
+}
+
+.health-bar-label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+#hp {
+  position:relative; 
+  bottom:10px;   
+}
+#barmas{
+  width: 10%;
+}
+#map{
+  width: 10%;
+}
     </style>
     
     <h2>A grande empresa</h2>
+    <div class="health-bar-container">
+      <span id="hp"><b>HP: </b></span>
+      <span class="health-bar-label"></span>
+      <div class="health-bar">
+        <div class="health" id="health" style="width:100%"></div>
+      </div>
+    </div>
 <h2>Produtos:</h2>
 <h2 id="wallet2">Balance: </h2>
-<button onclick="setRandomPrices()" id="bomdia">Next day</button> <br>
+
+<button onclick="setRandomPrices()" id="bomdia">Next day</button> <button id="barmas">Weapons</button> <button id="map">Map</button> <br>
 Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 <div class="buttons">
   <div id="price1">
@@ -91,6 +130,7 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 
 <script>
   let wallet = 1000;
+  let life=100;
   const roundedPriceArray = [];
     
 
@@ -101,6 +141,9 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
     
   
 }
+
+const healthBar = document.getElementById("health");
+healthBar.style.width = life + "%";
 function setRandomPrices() {
     
     const products = [
@@ -297,6 +340,7 @@ function removeFromInventory(product) {
   showInventory();
   showWallet();
   setRandomPrices();
+  
   
 </script>
   </body>
