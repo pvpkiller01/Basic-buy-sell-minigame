@@ -135,7 +135,8 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 <script>
   let wallet = 1000;
   let life=100;
-  let day=0;
+  let day=1;
+  let dayBool=false;
   const roundedPriceArray = [];
     
 
@@ -153,8 +154,11 @@ function showDay(){
 const healthBar = document.getElementById("health");
 healthBar.style.width = life + "%";
 function setRandomPrices() {
-    day++;
-    showDay();
+  if(dayBool==true){
+  day++;
+  showDay();
+  }
+    dayBool=true;
     const products = [
       { id: 1, basePrice: 100, minVariation: -0.25, maxVariation: 0.15 },
       { id: 2, basePrice: 150, minVariation: -0.45, maxVariation: 0.20 },
