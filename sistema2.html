@@ -208,8 +208,7 @@ function addToInventory(product) {
       alert('Você não tem dinheiro suficiente para comprar este produto');
       return;
     }
-    wallet -= totalPrice;
-    showWallet();
+    
   
   
   if (isNaN(quantity)) {
@@ -265,7 +264,8 @@ function addToInventory(product) {
   
   
   
-  
+  wallet -= totalPrice;
+    showWallet();
 
   showInventory();
   showWallet();
