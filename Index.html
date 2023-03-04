@@ -94,6 +94,9 @@ button:hover {
 .buy-btn {
   width: 50%;
 }
+#tela-sobreposta {
+  border: 2px solid #4d4d4d; /* define uma borda sólida com cor cinza */
+}
 #tela-character {
   border: 2px solid #4d4d4d; /* define uma borda sólida com cor cinza */
 }
@@ -148,19 +151,31 @@ button:hover {
     <tbody>
       <tr>
         <td>Knuckles</td>
-        <td style="padding-left: 20px;display: flex; align-items: center;">50$ <button class="buy-btn">Buy</button> </td> 
+        <td style="padding-left: 20px;display: flex; align-items: center;">50$ <button onclick="buyProduct(50,0)" class="buy-btn">Buy</button> </td> 
       </tr>
       <tr>
         <td>Knife</td>
-        <td style="padding-left: 20px;display: flex; align-items: center;">100$<button class="buy-btn">Buy</button></td> 
+        <td style="padding-left: 20px;display: flex; align-items: center;">100$<button onclick="buyProduct(100,1)" class="buy-btn">Buy</button></td> 
       </tr>
       <tr>
         <td>Pistol</td>
-        <td style="padding-left: 20px;display: flex; align-items: center;">500$<button class="buy-btn">Buy</button></td> 
+        <td style="padding-left: 20px;display: flex; align-items: center;">500$<button onclick="buyProduct(500,2)" class="buy-btn">Buy</button></td> 
       </tr>
       <tr>
         <td>MP5</td>
-        <td style="padding-left: 20px; display: flex; align-items: center;">1000$<button class="buy-btn">Buy</button></td> 
+        <td style="padding-left: 20px; display: flex; align-items: center;">1000$<button onclick="buyProduct(1000,3)" class="buy-btn">Buy</button></td> 
+      </tr>
+      <tr>
+        <td>P90</td>
+        <td style="padding-left: 20px; display: flex; align-items: center;">2300$<button onclick="buyProduct(2300,4)" class="buy-btn">Buy</button></td> 
+      </tr>
+      <tr>
+        <td>AK-47</td>
+        <td style="padding-left: 20px; display: flex; align-items: center;">3000$<button onclick="buyProduct(3000,5)" class="buy-btn">Buy</button></td> 
+      </tr>
+      <tr>
+        <td>M4A1</td>
+        <td style="padding-left: 20px; display: flex; align-items: center;">4000$<button onclick="buyProduct(4000,6)" class="buy-btn">Buy</button></td> 
       </tr>
     </tbody>
   </table>
@@ -205,6 +220,7 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
 <ul id="inventory"></ul>  
 
 <script>
+  const listWeapons = [false,false,false,false,false,false,false];
   let telaArmas = false;
   let telaCharacter = false;
   let wallet = 1000;
@@ -212,7 +228,24 @@ Digite a quantidade: <input type="number" id="quantityInput"><br> <br>
   let day=1;
   let dayBool=false;
   const roundedPriceArray = [];
-  
+  function buyProduct(x,y){
+    
+    if(wallet<x){
+      alert('Você não tem dinheiro suficiente para comprar esta arma');
+      return;
+    }
+    if(listWeapons[y]){
+      alert("You already own this weapon");
+      return;
+    }
+    
+    listWeapons[y]=true;
+    
+    
+    
+    wallet-=x;
+    showWallet();
+  }
   function abrirTelaSobreposta() {
     if(telaArmas==false){
   document.getElementById("tela-sobreposta").style.display = "block";
